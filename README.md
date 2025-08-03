@@ -1,72 +1,161 @@
-# Setup Guide  
+# Edit Together - Collaborative Text Editor
 
-Follow this guide to install and run the **ChatApp** using **Qt** and **Python WebSockets**.  
+A real-time collaborative text editor that allows multiple users to edit documents simultaneously using advanced conflict resolution algorithms. Built with Qt (C++) for the frontend and Python WebSockets for the backend.
 
----
+![Version](https://img.shields.io/badge/version-1.0-blue.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-## 1. Installing Qt  
+## ✨ Features
 
-1. Run **`qt-online-installer-windows-x64-4.8.1`**.  
-2. Create a **Qt account** (either in the app or online).  
-3. Accept the **terms and conditions**.  
-4. Keep clicking **Next** until the installation options appear.  
-5. Select **"Custom Installation"** and tick **"Associate common file types with Qt Creator"**.  
-6. Search for **"websockets"** and select **"Qt WebSockets"** under **"Qt 6.8.2"**.  
-7. Click **Next** and install Qt.  
+- **Real-time Collaboration**: Multiple users can edit the same document simultaneously
+- **Conflict-Free Editing**: Uses RGA (Replicated Growable Array) algorithm for seamless conflict resolution
+- **Rich Text Formatting**: Support for bold, italic, underline, and text alignment
+- **File Operations**: Create, open, save, and save as functionality
+- **Client Identification**: Automatic assignment of unique client IDs (A, B, C, etc.)
+- **Version Vector Synchronization**: Advanced synchronization mechanism for concurrent edits
+- **Cross-platform**: Works on Windows, macOS, and Linux
 
----
+## 🏗️ Architecture
 
-## 2. Opening the Project in Qt Creator  
+- **Frontend**: Qt 6.x (C++) with rich text editing capabilities
+- **Backend**: Python WebSocket server for real-time communication
+- **Algorithm**: RGA (Replicated Growable Array) for conflict-free replicated data types (CRDT)
+- **Networking**: WebSocket protocol for low-latency real-time updates
 
-1. Open **Qt Creator**.  
-2. Click **"Open Project"**.  
-3. Navigate to the **GitHub repository**, select **`chatapp.pro`** (Type: *Qt Project File*), and click **"Open"**.  
-4. **Update the IPv4 address**:  
-   - Open **`chatwindow.cpp`** from the repository.  
-   - Press **Windows Key + Search for "cmd"**, then **"Run as Administrator"**.  
-   - Type:  
-     ```sh
-     ipconfig
-     ```
-   - Look for the **IPv4 address** (e.g., `192.168.x.xxx`) and **replace it in Line 21 of `chatwindow.cpp`**.  
+## 📋 Requirements
 
----
+### Software Dependencies
+- **Qt 6.x** with Qt WebSockets module
+- **Python 3.7+** with the following packages:
+  - `asyncio` (built-in)
+  - `websockets`
+  - `json` (built-in)
 
-## 3. Building and Running the Application  
+### System Requirements
+- Windows 10+, macOS 10.14+, or Linux (Ubuntu 18.04+)
+- Minimum 4GB RAM
+- Network connectivity for collaboration features
 
-1. In **Qt Creator**, click **Build → Build All Projects**.  
-2. Click **"Build"** (bottom-right) to monitor the build process.  
-3. If you see **"Elapsed time"**, the build is complete.  
+## 🚀 Installation
 
----
+### 1. Install Qt
 
-## 4. Running the Server  
+1. Download **Qt Online Installer** from [qt.io](https://www.qt.io/download)
+2. Create a Qt account and accept terms and conditions
+3. Select **Custom Installation**
+4. Choose **Qt 6.8.x** and ensure **Qt WebSockets** module is selected
+5. Complete the installation
 
-1. In the **GitHub repository**, navigate to the **"server"** folder.  
-2. Open `server.py` and run:  
-   ```sh
+### 2. Install Python Dependencies
+
+```bash
+pip install websockets
+```
+
+### 3. Clone Repository
+
+```bash
+git clone https://github.com/TahaZahid05/edit-together.git
+cd edit-together
+```
+
+## 🖥️ Usage
+
+### Starting the Server
+
+1. Open a terminal and navigate to the project directory
+2. Start the Python WebSocket server:
+   ```bash
    python server.py
-    ```
+   ```
 3. You should see:
-    ```sh
-    WebSocket Server Started on ws://0.0.0.0:12345
-    ```
+   ```
+   WebSocket Server Started on ws://0.0.0.0:12345
+   ```
 
----
+### Running the Client Application
 
-## 5. Running the Chat Application
+1. Open **Qt Creator**
+2. Open the project file **`HelloWorld.pro`**
+3. Build the project: **Build → Build All Projects**
+4. Run the application: **Build → Run**
 
-1. In **Qt Creator**, click **Build -> Run**.
-2. The application will open, and the **`server.py`** terminal should display:
-    ```sh
-    New client connected. Total clients: 1
-    ```
-3. Test the chat functionality:
-    - Enter **`hello`** in the **QLineEdit** bar.
-    - Click the **Send Button**.
-    - Your text will appear in the **QTextEdit**.
-    - The **`server.py`** terminal will show:
-      ```sh
-      Received: hello
-      ```
-4. Try connecting from multiple devices on the **same Wi-Fi network for a better understanding.**
+### Collaborating
+
+1. Start the server (as described above)
+2. Launch multiple instances of the client application
+3. Each client will automatically connect and receive a unique ID (A, B, C, etc.)
+4. Start editing - changes will be synchronized in real-time across all connected clients
+5. Use the formatting toolbar for rich text features
+
+## 📁 Project Structure
+
+```
+edit-together/
+├── main.cpp                 # Application entry point
+├── MainWindow.h/.cpp        # Main window and UI logic
+├── ds2_proj.h              # RGA algorithm implementation
+├── mainwindow.ui           # Qt UI design file
+├── server.py               # Python WebSocket server
+├── HelloWorld.pro          # Qt project configuration
+├── resources.qrc           # Qt resources file
+├── HelloWorld_en_GB.ts     # Translation file
+└── icons/                  # Application icons
+```
+
+## 🔧 Technical Details
+
+### RGA Algorithm
+
+The Replicated Growable Array (RGA) is a conflict-free replicated data type (CRDT) that enables multiple users to edit a document simultaneously without conflicts. Key features:
+
+- **Unique Identifiers**: Each character has a unique ID
+- **Version Vectors**: Track the state of each client
+- **Tombstone Deletion**: Deleted characters are marked but not removed
+- **Deterministic Ordering**: Ensures consistent document state across all clients
+
+### Network Protocol
+
+- **WebSocket Communication**: Real-time bidirectional communication
+- **JSON Messages**: Structured message format for operations
+- **Client Management**: Server tracks connected clients and assigns unique IDs
+- **Message History**: New clients receive full document state upon connection
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🎓 Academic Context
+
+This project was developed as part of a research study on collaborative editing algorithms and conflict-free replicated data types (CRDTs). The implementation demonstrates practical applications of distributed systems concepts in real-time collaborative software.
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**Server won't start:**
+- Ensure Python 3.7+ is installed
+- Check if port 12345 is available
+- Install websockets: `pip install websockets`
+
+**Client won't connect:**
+- Verify server is running
+- Check firewall settings
+- Ensure Qt WebSockets module is installed
+
+**Build errors:**
+- Update Qt to version 6.x
+- Verify Qt WebSockets module is available
+- Check C++17 compiler support
+
+## 📞 Support
+
+For questions, issues, or contributions, please open an issue on GitHub or contact the development team.
